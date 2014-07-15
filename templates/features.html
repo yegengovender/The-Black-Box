@@ -1,0 +1,36 @@
+<h3>Features</h3>
+
+<div class="row">
+    <div class="col-sm-6">
+
+
+        <div class="row feature-item" ng-repeat="feature in project.features track by $index" ng-click="selectFeature(feature)">
+            <div class="col-sm-10">
+                <h4>{{feature.name}}</h4>
+
+                <p>{{feature.description}}</p>
+                <span ng-show="feature.functionality">functionality: {{feature.functionality.length}} </span>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-danger" ng-click="deleteFeature(feature)">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-6">
+        <div class="row">
+
+            <form role="form" class="well col-sm-offset-1 col-sm-11">
+                <text-box label="'New feature'" model="newFeature.name" name="'featureName'"></text-box>
+                <text-area label="'Description'" model="newFeature.description" name="'featureDescription'"></text-area>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary" ng-click="addFeature()">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

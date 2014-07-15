@@ -1,0 +1,16 @@
+.feature-item {
+  border: solid 1px #dddddd;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 3px;
+  cursor: pointer;
+  background-color: #efefef;
+
+  p {
+    color: #555555;
+  }
+}
+
+.feature-item:hover {
+  background-color: #f7f7f7;
+}

@@ -7,6 +7,7 @@ angular.module("BlackBox.app", [
 angular.module("BlackBox.controllers", [])
     .controller("blackBoxController", function ($scope, fireStore) {
         $scope.pages = ['templates/features.html', 'templates/functionality.html', 'templates/testCases.html'];
+        $scope.codeAreas = ['database', 'c# code', 'javascript', 'HTML'];
         $scope.currentViewIndex = 0;
         $scope.newFeature = {};
         $scope.newFunctionality = {};
@@ -65,12 +66,13 @@ angular.module("BlackBox.controllers", [])
         };
 
         $scope.addTestCase = function () {
-            var testCase = new TestCase($scope.newTestCase.name, $scope.newTestCase.description, '');
+            var testCase = new TestCase($scope.newTestCase.name, $scope.newTestCase.description, $scope.newTestCase.codeArea);
             blackBox.addTestCaseToFunctionality($scope.currentFunctionality, testCase);
             fireStore.saveProject(blackBox.data);
 
             $scope.newTestCase.name = "";
             $scope.newTestCase.description = "";
+            $scope.newTestCase.codeArea = null;
         };
 
         $scope.deleteTestCase = function (testCase) {
@@ -130,4 +132,17 @@ angular.module('BlackBox.directives', [])
             },
             templateUrl: '/BlackBox/templates/formElements/textArea.html'
         };
-    });
+    })
+    .directive('dropDown', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                model: '=model',
+                name: '=name',
+                label: '=label',
+                options: '=options'
+            },
+            templateUrl: '/BlackBox/templates/formElements/dropDown.html'
+        };
+    })
+;

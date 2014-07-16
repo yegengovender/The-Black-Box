@@ -10,6 +10,7 @@
                 <h4>{{testCase.name}}</h4>
 
                 <p>{{testCase.description}}</p>
+                <p>[{{testCase.codeArea}}]</p>
             </div>
             <div class="col-sm-2">
                 <button class="btn btn-sm btn-danger" ng-click="deleteTestCase(testCase)">Delete</button>
@@ -24,6 +25,7 @@
             <form role="form" class="well col-sm-offset-1 col-sm-11">
                 <text-box label="'New test case'" model="newTestCase.name" name="'testCaseName'"></text-box>
                 <text-area label="'Description'" model="newTestCase.description" name="'testCaseDescription'"></text-area>
+                <drop-down label="'Code Area'" model="newTestCase.codeArea" name="'testCaseCodeArea'" options="codeAreas"></drop-down>
 
                 <div class="row">
                     <div class="col-sm-12">

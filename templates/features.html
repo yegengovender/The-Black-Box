@@ -10,6 +10,7 @@
 
                 <p>{{feature.description}}</p>
                 <span ng-show="feature.functionality">functionality: {{feature.functionality.length}} </span>
+                <span ng-show="testCaseCount(feature) > 0">test cases: {{testCaseCount(feature)}} </span>
             </div>
             <div class="col-sm-2">
                 <button class="btn btn-sm btn-danger" ng-click="deleteFeature(feature)">Delete</button>

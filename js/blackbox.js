@@ -21,7 +21,7 @@ var BlackBox = function (projectName) {
         var feature = this.data.features[oldIndex];
         this.data.features.splice(oldIndex, 1);
         this.data.features.splice(newIndex, 0, feature);
-    }
+    };
 
     this.addFunctionalityToFeature = function (feature, functionality) {
         if (!feature.functionality) {
@@ -51,6 +51,18 @@ var BlackBox = function (projectName) {
             functionality.testCases.splice(index, 1);
         }
     };
+
+    this.testCaseCount = function (feature) {
+        var count = 0;
+        if (feature.functionality) {
+            feature.functionality.forEach(function (f) {
+                if (f.testCases) {
+                    count += f.testCases.length;
+                }
+            });
+        }
+        return count;
+    };
 };
 
 
@@ -58,6 +70,7 @@ var Feature = function (name, description) {
     this.name = name;
     this.description = description;
     this.functionality = [];
+
 };
 
 var Functionality = function (name, description) {

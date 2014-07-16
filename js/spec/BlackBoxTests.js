@@ -1,9 +1,9 @@
 describe("BlackBox", function() {
     var blackBox;
-
     beforeEach(function(){
         blackBox = new BlackBox("ProjectName");
     });
+
     it("accepts the name of the project in the constructor", function () {
         expect(blackBox.data.projectName).toEqual("ProjectName");
     });
@@ -12,7 +12,7 @@ describe("BlackBox", function() {
         expect(blackBox.data.features).toBeDefined();
     });
 
-    var feature1, feature2
+    var feature1, feature2;
     beforeEach(function () {
         feature1 = new Feature("feature1", "First feature");
         feature2 = new Feature("feature2", "Second feature");
@@ -34,7 +34,7 @@ describe("BlackBox", function() {
         expect(blackBox.data.features[0]).toEqual(feature2);
     });
 
-    var functionality1, functionality2
+    var functionality1, functionality2;
     beforeEach(function () {
         functionality1 = new Functionality("functionality1", "First functionality");
         functionality2 = new Functionality("functionality2", "Second functionality");
@@ -90,7 +90,17 @@ describe("BlackBox", function() {
         blackBox.removeTestCaseFromFunctionality(functionality1, testCase1);
         expect(functionality1.testCases.length).toEqual(1);
         expect(functionality1.testCases[0]).toEqual(testCase2);
+    });
 
+    it("counts the number of test cases per feature", function () {
+        var testCase1 = new TestCase("test case1", "first test case", "javascript");
+        var testCase2 = new TestCase("test case2", "second test case", "databases");
+        blackBox.addFeature(feature1);
+        blackBox.addFunctionalityToFeature(feature1, functionality1);
+        blackBox.addFunctionalityToFeature(feature1, functionality2);
+        blackBox.addTestCaseToFunctionality(functionality1, testCase1);
+        blackBox.addTestCaseToFunctionality(functionality1, testCase2);
+        expect(blackBox.testCaseCount(feature1)).toEqual(2);
     });
 });
 

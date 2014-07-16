@@ -1,0 +1,36 @@
+<h3>{{currentFeature.name}} / {{currentFunctionality.name}} <a href="#" class="btn btn-primary btn-sm" ng-click="backToFunctionality()">Back</a></h3>
+<h4>Test Cases</h4>
+
+<div class="row">
+    <div class="col-sm-6">
+
+
+        <div class="row feature-item" ng-repeat="testCase in currentFunctionality.testCases track by $index">
+            <div class="col-sm-10">
+                <h4>{{testCase.name}}</h4>
+
+                <p>{{testCase.description}}</p>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-danger" ng-click="deleteTestCase(testCase)">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-6">
+        <div class="row">
+
+            <form role="form" class="well col-sm-offset-1 col-sm-11">
+                <text-box label="'New test case'" model="newTestCase.name" name="'testCaseName'"></text-box>
+                <text-area label="'Description'" model="newTestCase.description" name="'testCaseDescription'"></text-area>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary" ng-click="addTestCase()">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

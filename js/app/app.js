@@ -6,10 +6,11 @@ angular.module("BlackBox.app", [
 
 angular.module("BlackBox.controllers", [])
     .controller("blackBoxController", function ($scope, fireStore) {
-        $scope.pages = ['templates/features.html', 'templates/functionality.html'];
+        $scope.pages = ['templates/features.html', 'templates/functionality.html', 'templates/testCases.html'];
         $scope.currentViewIndex = 0;
         $scope.newFeature = {};
         $scope.newFunctionality = {};
+        $scope.newTestCase = {};
         var blackBox;
 
         fireStore.getProject().then(function (ret) {
@@ -20,8 +21,7 @@ angular.module("BlackBox.controllers", [])
         $scope.addFeature = function () {
             var feature = new Feature($scope.newFeature.name, $scope.newFeature.description);
             blackBox.addFeature(feature);
-            var projectData = blackBox.data;
-            fireStore.saveProject(projectData);
+            fireStore.saveProject(blackBox.data);
 
             $scope.newFeature.name = "";
             $scope.newFeature.description = "";
@@ -44,8 +44,7 @@ angular.module("BlackBox.controllers", [])
         $scope.addFunctionality = function () {
             var functionality = new Functionality($scope.newFunctionality.name, $scope.newFunctionality.description);
             blackBox.addFunctionalityToFeature($scope.currentFeature, functionality);
-            var projectData = blackBox.data;
-            fireStore.saveProject(projectData);
+            fireStore.saveProject(blackBox.data);
 
             $scope.newFunctionality.name = "";
             $scope.newFunctionality.description = "";
@@ -54,22 +53,34 @@ angular.module("BlackBox.controllers", [])
         $scope.deleteFunctionality = function (functionality) {
             blackBox.removeFunctionalityFromFeature($scope.currentFeature, functionality);
             fireStore.saveProject(blackBox.data);
-        }
-
-    })
-    .controller("codeAreaController", function ($scope, fireStore) {
-        $scope.codeAreas = [];
-        $scope.newCodeArea = {};
-
-        fireStore.getCodeAreas().then(function (data) {
-            $scope.codeAreas = data;
-        })
-
-        $scope.addCodeArea = function () {
-            $scope.codeAreas.push({name: $scope.newCodeArea.name});
-            fireStore.saveCodeAreas($scope.codeAreas);
-            $scope.newCodeArea = {};
         };
+
+        $scope.selectFunctionality = function (functionality) {
+            $scope.currentFunctionality = functionality;
+            $scope.currentViewIndex = 2;
+        };
+
+        $scope.backToFunctionality = function () {
+            $scope.currentViewIndex = 1;
+        };
+
+        $scope.addTestCase = function () {
+            var testCase = new TestCase($scope.newTestCase.name, $scope.newTestCase.description, '');
+            blackBox.addTestCaseToFunctionality($scope.currentFunctionality, testCase);
+            fireStore.saveProject(blackBox.data);
+
+            $scope.newTestCase.name = "";
+            $scope.newTestCase.description = "";
+        };
+
+        $scope.deleteTestCase = function (testCase) {
+            blackBox.removeTestCaseFromFunctionality($scope.currentFunctionality, testCase);
+            fireStore.saveProject(blackBox.data);
+        };
+
+        $scope.testCaseCount = function (feature) {
+            return blackBox.testCaseCount(feature);
+        }
 
     });
 
@@ -79,10 +90,6 @@ angular.module("BlackBox.services", [])
             saveProject: function (projectData) {
                 var ref = new Firebase('https://amber-fire-7039.firebaseio.com');
                 ref.set({'project': projectData});
-            },
-            saveCodeAreas: function (codeAreas) {
-                var ref = new Firebase('https://amber-fire-7039.firebaseio.com');
-                ref.set({'codeAreas': codeAreas});
             },
             getProject: function () {
                 var ref = new Firebase('https://amber-fire-7039.firebaseio.com');
@@ -97,22 +104,6 @@ angular.module("BlackBox.services", [])
                     deferred.resolve(blackBox);
                 });
                 return deferred.promise;
-            },
-            getCodeAreas: function () {
-                var ref = new Firebase('https://amber-fire-7039.firebaseio.com');
-                var blackBox = new BlackBox("All Connect");
-                var deferred = $q.defer();
-                ref.on('value', function (snapshot) {
-                    var data = snapshot.val();
-                    if (data.codeAreas) {
-                        deferred.resolve(data.codeAreas);
-                    }
-                    else {
-                        deferred.reject(snapshot);
-                    }
-                });
-                return deferred.promise;
-
             }
         };
     });
